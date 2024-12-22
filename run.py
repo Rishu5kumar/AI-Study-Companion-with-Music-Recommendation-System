@@ -1,16 +1,14 @@
 # it directly call the __init__.py file
 
 from flask import request, render_template, url_for, redirect, jsonify, Response, Flask
-# from mlapp import app
-# import google.generativeai as genai
+import google.generativeai as genai
 import speech_recognition as sr
-# import pytesseract as pt
-# from PIL import Image
+import pytesseract as pt
 import html
 import re
 import cv2
 import numpy as np
-# from tensorflow.keras.models import model_from_json
+from tensorflow.keras.models import model_from_json
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 import os
@@ -49,11 +47,6 @@ def media():
 def contact():
     return render_template('contact.html')
 
-# @app.route("/face_recognition")
-# def face_recognition():
-#     return render_template('face_recognition.html')
-
-
 @app.route("/index", methods=["GET","POST"])
 def index():
     if request.method == "POST":
@@ -76,32 +69,7 @@ def index():
                 return render_template("result.html", qa=qa)  # Directly render result without redirect
 
     return render_template("index.html")
-
-    #     if input_method == "Text":
-    #         user_input = request.form.get("user_input")
-    #         return redirect(url_for("result", input_text=user_input, num_questions=num_questions))
-    #     elif input_method == "Image":
-    #         uploaded_file = request.files.get("uploaded_file")
-    #         if uploaded_file:
-    #             image = Image.open(uploaded_file)
-    #             user_input = get_text_from_image(image)
-    #             return redirect(url_for("result", input_text=user_input, num_questions=num_questions))
-    # return render_template("index.html")
             
-
-# @app.route("/result")
-# def result():
-#     input_text = request.args.get("input_text", "")
-#     num_questions = request.args.get("num_questions", 10)  # Default to 10 if not specified
-#     try:
-#         num_questions = int(num_questions)
-#     except ValueError:
-#         num_questions = 10  # Fallback to 10 if input is invalid
-
-#     if input_text:
-#         qa = generate_paragraph(input_text, num_questions)
-#         return render_template("result.html", qa=qa)
-#     return render_template("result.html", error="No input provided.")
 
 def get_text_from_image(image):
     input_text = pt.image_to_string(image)
@@ -170,76 +138,6 @@ def chat():
     user_input = request.form['message']
     response_text = generate_response(user_input)
     return jsonify({"response": response_text})
-
-# import random
-# import nltk
-# from nltk.tokenize import word_tokenize
-# from nltk.corpus import stopwords
-# from sklearn.feature_extraction.text import TfidfVectorizer
-# from sklearn.neighbors import KNeighborsClassifier
-# import numpy as np
-
-# @app.route("/chatbot")
-# def chatbot():
-#     return render_template('chatbot.html')
-# # Dummy music recommendation data
-# music_recommendations = [
-#     {"title": "Focus Beats", "artist": "Study Tunes", "genre": "Instrumental"},
-#     {"title": "Calm Vibes", "artist": "Chillout Lounge", "genre": "Ambient"},
-#     {"title": "Concentration Flow", "artist": "Mindful Music", "genre": "Lo-fi"},
-# ]
-
-# # Training data for chatbot responses
-# training_data = [
-#     ("hello", "Hello! How can I assist you with your studies today?"),
-#     ("how are you", "I'm an AI companion, always here to help you with your study needs!"),
-#     ("recommend music", "Sure! Here's a music recommendation to help you focus."),
-#     ("thank you", "You're welcome! Happy studying!"),
-#     ("what is ai", "AI stands for Artificial Intelligence, which is the simulation of human intelligence in machines."),
-#     ("recommend me some study tips", "Break your study sessions into smaller chunks, use flashcards, and take regular breaks!"),
-#     ("what is machine learning", "Machine Learning is a branch of AI that allows computers to learn from data and make decisions."),
-# ]
-
-# # Extract features and labels for training
-# texts, responses = zip(*training_data)
-# vectorizer = TfidfVectorizer()
-# X = vectorizer.fit_transform(texts)
-# y = np.arange(len(texts))
-
-# # Train a simple K-Nearest Neighbors model
-# model = KNeighborsClassifier(n_neighbors=1)
-# model.fit(X, y)
-
-# # Initialize NLTK resources
-# nltk.download('punkt')
-# nltk.download('stopwords')
-# stop_words = set(stopwords.words('english'))
-
-# def clean_text(text):
-#     """Cleans and preprocesses the input text."""
-#     tokens = word_tokenize(text.lower())
-#     tokens = [word for word in tokens if word.isalpha() and word not in stop_words]
-#     return " ".join(tokens)
-
-# def generate_response(user_input):
-#     """Generate a response using simple ML/NLP logic."""
-#     cleaned_input = clean_text(user_input)
-#     input_vector = vectorizer.transform([cleaned_input])
-#     prediction = model.predict(input_vector)
-#     response = responses[prediction[0]]
-#     return response
-
-# @app.route("/chat1", methods=["POST"])
-# def chat1():
-#     user_input = request.json.get("message")
-#     response_text = generate_response(user_input)
-#     return jsonify({"response": response_text})
-
-# @app.route("/music", methods=["GET"])
-# def recommend_music():
-#     recommendation = random.choice(music_recommendations)
-#     return jsonify(recommendation)
-
 
 # Global variable to store current emotion
 current_emotion = {'emotion': 'neutral', 'last_updated': time.time()}
