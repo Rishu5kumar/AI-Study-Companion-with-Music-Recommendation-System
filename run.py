@@ -1,5 +1,3 @@
-# it directly call the __init__.py file
-
 from flask import request, render_template, url_for, redirect, jsonify, Response, Flask
 import google.generativeai as genai
 import speech_recognition as sr
