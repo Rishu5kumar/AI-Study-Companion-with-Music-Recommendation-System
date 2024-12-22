@@ -1,6 +1,9 @@
 Flask
-Pillow
-pytesseract
 google-generativeai
-speechrecognition
-nltk
+tensorflow
+opencv-python
+PyTesseract
+spotipy
+numpy
+pandas
+requests
